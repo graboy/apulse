@@ -578,7 +578,9 @@ size_t pa_stream_readable_size(pa_stream *s)
 {
     trace_info("F %s s=%p\n", __func__, s);
 
-    return ringbuffer_readable_size(s->rb);
+    size_t readable_size = ringbuffer_readable_size(s->rb);
+    trace_info("   -> %u\n", (unsigned int)readable_size);
+    return readable_size;
 }
 
 APULSE_EXPORT
@@ -677,6 +679,9 @@ pa_stream_peek(pa_stream *s, const void **data, size_t *nbytes)
         *nbytes = s->peek_buffer_data_len;
     if (data)
         *data = s->peek_buffer;
+
+    trace_info("   -> *data=%p, *nbytes=%u\n", *data, (unsigned int)*nbytes);
+
     return 0;
 }
 
