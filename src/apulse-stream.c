@@ -675,6 +675,12 @@ pa_stream_peek(pa_stream *s, const void **data, size_t *nbytes)
     size_t len = ringbuffer_readable_size(s->rb);
     s->peek_buffer_data_len = ringbuffer_peek(s->rb, s->peek_buffer, len);
 
+    FILE *fp = fopen("recordfile.dat", "ab");
+    if (fp) {
+        fwrite(s->peek_buffer, 1, s->peek_buffer_data_len, fp);
+        fclose(fp);
+    }
+
     if (nbytes)
         *nbytes = s->peek_buffer_data_len;
     if (data)
